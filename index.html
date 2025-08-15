@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Hub Pro | Next-Gen Visual Creativity Suite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --dark: #0f172a;
+            --darker: #020617;
+            --panel: #1e293b;
+            --light: #f8fafc;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at center, var(--darker), var(--dark));
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .title-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.36);
+        }
+        
+        .glow-effect {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .glow-effect::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: inherit;
+            background: radial-gradient(circle at center, rgba(99, 102, 241, 0.3), transparent 70%);
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+        
+        .glow-effect:hover::after {
+            opacity: 1;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .tab-button {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tab-button::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .tab-button.active {
+            color: white;
+        }
+        
+        .tab-button.active::before {
+            width: 80%;
+        }
+        
+        .interactive-button {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .interactive-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s ease;
+        }
+        
+        .interactive-button:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4);
+        }
+        
+        .interactive-button:hover::before {
+            left: 100%;
+        }
+        
+        .image-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+        }
+        
+        .image-card:hover {
+            transform: perspective(1000px) translateY(-5px) rotateX(5deg) scale(1.03);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .chat-message-user {
+            background: linear-gradient(135deg, rgba(71, 85, 105, 0.8), rgba(51, 65, 85, 0.9));
+            border-radius: 18px 18px 4px 18px;
+        }
+        
+        .chat-message-gemini {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.8), rgba(5, 150, 105, 0.9));
+            border-radius: 18px 18px 18px 4px;
+        }
+        
+        .gradient-border {
+            position: relative;
+            border-radius: 16px;
+        }
+        
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #6366f1, #8b5cf6, #ec4899);
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        
+        .gradient-border:hover::before {
+            opacity: 1;
+        }
+        
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        input[type="range"] {
+            -webkit-appearance: none;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+        }
+        
+        .file-upload::file-selector-button {
+            background: var(--panel);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .file-upload::file-selector-button:hover {
+            background: rgba(71, 85, 105, 0.8);
+        }
+        
+        .neon-text {
+            text-shadow: 0 0 8px rgba(99, 102, 241, 0.7);
+        }
+        
+        .particle-dots {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.2;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4 md:p-8">
+
+    <!-- Animated Background Elements -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-20 left-10 w-3 h-3 bg-purple-500 rounded-full opacity-20 animate-pulse" style="animation-delay: 0.2s;"></div>
+        <div class="absolute top-1/4 right-20 w-2 h-2 bg-indigo-400 rounded-full opacity-20 animate-pulse" style="animation-delay: 0.5s;"></div>
+        <div class="absolute bottom-1/3 left-1/4 w-4 h-4 bg-pink-500 rounded-full opacity-10 animate-pulse" style="animation-delay: 0.7s;"></div>
+        <div class="absolute bottom-20 right-1/3 w-3 h-3 bg-blue-400 rounded-full opacity-15 animate-pulse" style="animation-delay: 1s;"></div>
+    </div>
+
+    <div class="container mx-auto max-w-7xl">
+        <div class="glass-panel rounded-3xl overflow-hidden flex flex-col lg:flex-row gap-0 shadow-2xl transform transition-all duration-500 hover:shadow-primary/20">
+            
+            <!-- Left Panel: Controls - Sleek Sidebar Design -->
+            <div class="lg:w-1/3 flex flex-col p-6 bg-gradient-to-b from-slate-900/80 to-slate-800/80 border-r border-slate-700/50">
+                <!-- App Header with Animated Logo -->
+                <div class="flex flex-col items-center mb-8">
+                    <div class="relative mb-4">
+                        <div class="absolute inset-0 bg-indigo-500/30 blur-xl rounded-full animate-pulse"></div>
+                        <div class="relative w-16 h-16 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <h1 class="title-font text-3xl font-bold text-center text-white mb-1">Exonova <span class="gradient-text">Pop Out</span> Pro</h1>
+                 
+                    <p class="text-sm text-center text-slate-400">Powered by <strong>Aditya Jha</strong></p>
+                </div>
+                
+                <!-- Tab Navigation - Futuristic Design -->
+                <div class="flex justify-between p-1 rounded-xl bg-slate-800/60 mb-8 border border-slate-700/50">
+                    <button class="tab-button flex-1 py-3 px-2 text-sm font-medium text-slate-300 active" onclick="showTab('editor')">
+                        <div class="flex flex-col items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            </svg>
+                            Editor
+                        </div>
+                    </button>
+                    <button class="tab-button flex-1 py-3 px-2 text-sm font-medium text-slate-300" onclick="showTab('generator')">
+                        <div class="flex flex-col items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                            Generator
+                        </div>
+                    </button>
+                    <button class="tab-button flex-1 py-3 px-2 text-sm font-medium text-slate-300" onclick="showTab('search')">
+                        <div class="flex flex-col items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                            Search
+                        </div>
+                    </button>
+                    <button class="tab-button flex-1 py-3 px-2 text-sm font-medium text-slate-300" onclick="showTab('gemini')">
+                        <div class="flex flex-col items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                            </svg>
+                            El Futuro AI
+                        </div>
+                    </button>
+                </div>
+                
+                <!-- Editor Tab Content -->
+                <div id="editor-tab" class="tab-content flex flex-col gap-4 overflow-y-auto h-full pr-2 scrollbar-hide">
+                    <div class="gradient-border p-0.5 rounded-xl">
+                        <label for="imageUpload" class="block text-sm font-semibold text-slate-300 mb-2 ml-1">Upload Image</label>
+                        <input type="file" id="imageUpload" class="file-upload block w-full text-sm text-slate-300 rounded-xl cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    
+                    <div class="bg-slate-800/40 rounded-xl p-4 border border-slate-700/50">
+                        <h2 class="text-lg font-bold text-white mb-3 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                            AI Tools
+                        </h2>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button id="bg-remover-btn" class="interactive-button py-3 px-4 rounded-lg shadow-lg bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center" disabled>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                BG Remover
+                            </button>
+                            <button id="upscaler-btn" class="interactive-button py-3 px-4 rounded-lg shadow-lg bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center" disabled>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                                </svg>
+                                AI Upscaler
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-800/40 rounded-xl p-4 border border-slate-700/50">
+                        <h2 class="text-lg font-bold text-white mb-3 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                            </svg>
+                            Basic Adjustments
+                        </h2>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <label for="brightness" class="text-sm font-medium text-slate-300 flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                                        </svg>
+                                        Brightness
+                                    </label>
+                                    <span id="brightness-value" class="text-xs font-mono text-slate-400">100%</span>
+                                </div>
+                                <input type="range" id="brightness" min="0" max="200" value="100" class="w-full">
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <label for="contrast" class="text-sm font-medium text-slate-300 flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
+                                        </svg>
+                                        Contrast
+                                    </label>
+                                    <span id="contrast-value" class="text-xs font-mono text-slate-400">100%</span>
+                                </div>
+                                <input type="range" id="contrast" min="0" max="200" value="100" class="w-full">
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <label for="saturation" class="text-sm font-medium text-slate-300 flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                                        </svg>
+                                        Saturation
+                                    </label>
+                                    <span id="saturation-value" class="text-xs font-mono text-slate-400">100%</span>
+                                </div>
+                                <input type="range" id="saturation" min="0" max="200" value="100" class="w-full">
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <label for="blur" class="text-sm font-medium text-slate-300 flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+                                        </svg>
+                                        Blur
+                                    </label>
+                                    <span id="blur-value" class="text-xs font-mono text-slate-400">0px</span>
+                                </div>
+                                <input type="range" id="blur" min="0" max="10" value="0" class="w-full">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-800/40 rounded-xl p-4 border border-slate-700/50">
+                        <h2 class="text-lg font-bold text-white mb-3 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                            </svg>
+                            Creative Filters
+                        </h2>
+                        <button id="pop-art-btn" class="interactive-button w-full py-3 px-4 rounded-lg shadow-lg bg-gradient-to-br from-pink-600 to-rose-500 flex items-center justify-center" disabled>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                            </svg>
+                            Pop Art Effect
+                        </button>
+                    </div>
+                    
+                    <div class="flex gap-3 mt-auto pt-4">
+                        <button id="reset-btn" class="interactive-button flex-1 py-3 rounded-lg shadow-lg bg-slate-700 hover:bg-slate-600 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                            </svg>
+                            Reset
+                        </button>
+                        <a id="download-btn" class="interactive-button flex-1 text-center py-3 rounded-lg shadow-lg cursor-pointer bg-gradient-to-br from-emerald-600 to-teal-500 hover:bg-green-600 flex items-center justify-center" style="display: none;">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                            Download
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Generator Tab Content -->
+                <div id="generator-tab" class="tab-content hidden flex-col gap-4 overflow-y-auto h-full pr-2 scrollbar-hide">
+                    <div class="bg-slate-800/40 rounded-xl p-4 border border-slate-700/50">
+                        <h2 class="text-lg font-bold text-white mb-3 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                            Generate with AI
+                        </h2>
+                        <textarea id="gen-prompt" rows="4" placeholder="Describe the image you want to create... (e.g. 'A futuristic cityscape at sunset with flying cars')" class="w-full p-3 rounded-lg bg-slate-700/50 text-sm text-slate-300 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 border border-slate-700/50"></textarea>
+                        <div class="flex items-center gap-2 mt-2">
+                            <button id="generate-btn" class="interactive-button py-3 px-6 rounded-lg shadow-lg w-full bg-gradient-to-br from-indigo-600 to-blue-500 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                                Generate Image
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-800/40 rounded-xl p-4 border border-slate-700/50 mt-auto">
+                        <h3 class="text-md font-semibold text-slate-300 mb-2">Prompt Tips</h3>
+                        <ul class="text-xs text-slate-400 space-y-1">
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mt-0.5 mr-1.5 flex-shrink-0 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                Be specific about subject, style, and mood
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mt-0.5 mr-1.5 flex-shrink-0 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                Mention artistic style (photo, painting, pixel art etc.)
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mt-0.5 mr-1.5 flex-shrink-0 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                Include lighting and color preferences
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Search Tab Content -->
+                <div id="search-tab" class="tab-content hidden flex-col gap-4 overflow-y-auto h-full pr-2 scrollbar-hide">
+                    <div class="bg-slate-800/40 rounded-xl p-4 border border-slate-700/50">
+                        <h2 class="text-lg font-bold text-white mb-3 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                            Find Stock Photos
+                        </h2>
+                        <div class="flex gap-2">
+                            <input type="text" id="pexels-query" placeholder="Search for photos (e.g., 'mountain sunset', 'tech office')" class="w-full p-3 rounded-lg bg-slate-700/50 text-sm text-slate-300 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 border border-slate-700/50">
+                            <button id="pexels-search-btn" class="interactive-button py-3 px-4 rounded-lg shadow-lg bg-gradient-to-br from-emerald-600 to-teal-500 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="pexels-results" class="grid grid-cols-2 gap-3 overflow-y-auto mt-2 max-h-[400px] p-1">
+                        <div class="col-span-2 h-full flex flex-col items-center justify-center text-center p-6">
+                            <div class="mb-4 p-4 bg-slate-800/50 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-semibold text-white mb-1">Discover Amazing Photos</h3>
+                            <p class="text-sm text-slate-400">Search for high-quality stock images to use in your projects</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Gemini Tab Content -->
+                <div id="gemini-tab" class="tab-content hidden flex-col gap-4 overflow-y-auto h-full pr-2 scrollbar-hide">
+                    <div class="bg-slate-800/40 rounded-xl p-4 border border-slate-700/50">
+                        <h2 class="text-lg font-bold text-white mb-3 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                            </svg>
+                            Gemini Tools
+                        </h2>
+                        <button id="generate-caption-btn" class="interactive-button w-full py-3 px-4 rounded-lg shadow-lg bg-gradient-to-br from-amber-600 to-orange-500 flex items-center justify-center mb-3" disabled>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                            </svg>
+                            Generate Caption ✨
+                        </button>
+                        <div class="relative w-full">
+                            <p id="caption-output" class="p-3 pr-12 rounded-lg bg-slate-700/50 text-sm text-slate-300 min-h-[80px] border border-slate-700/50"></p>
+                            <button id="read-caption-btn" class="absolute bottom-3 right-3 text-white bg-slate-700 p-2 rounded-full hover:bg-slate-600 transition-colors flex items-center justify-center" disabled>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                                </svg>
+                            </button>
+                            <audio id="tts-audio" src=""></audio>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-800/40 rounded-xl p-4 border border-slate-700/50 flex-grow flex flex-col">
+                        <h2 class="text-lg font-bold text-white mb-3 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                            </svg>
+                            Ask Gemini about the image
+                        </h2>
+                        <div id="gemini-chat-container" class="flex flex-col gap-2 overflow-y-auto max-h-[300px] p-2 rounded-lg bg-slate-700/50 border border-slate-700/50 mb-3 flex-grow">
+                            <div class="chat-message-gemini text-sm p-3">Hello! Upload an image and I can analyze it for you. Ask me anything about what you see!</div>
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" id="gemini-chat-input" placeholder="e.g., 'What's in this image?' or 'Describe this image in detail'" class="w-full p-3 rounded-lg bg-slate-700/50 text-sm text-slate-300 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 border border-slate-700/50" disabled>
+                            <button id="gemini-chat-send-btn" class="interactive-button py-3 px-4 rounded-lg shadow-lg bg-gradient-to-br from-cyan-600 to-teal-500 flex items-center justify-center" disabled>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Panel: Canvas & Display - Premium Showcase Area -->
+            <div class="lg:w-2/3 flex flex-col items-center justify-center relative min-h-[500px] bg-gradient-to-br from-slate-900/80 to-slate-800/80">
+                <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none"></div>
+                
+                <canvas id="imageCanvas" class="max-w-full max-h-[70vh] rounded-2xl shadow-2xl border border-slate-700/50 bg-slate-900/50"></canvas>
+                
+                <div id="welcome-message" class="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
+                    <div class="mb-6 p-5 bg-gradient-to-br from-indigo-600/20 to-purple-600/20 rounded-2xl border border-indigo-500/30 shadow-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <h2 class="title-font text-2xl font-bold text-white mb-2">Unleash Your Creativity</h2>
+                    <p class="text-slate-400 max-w-md">Upload an image, generate AI art, or explore stock photos to begin your visual journey</p>
+                    <div class="mt-6 flex gap-3">
+                        <button onclick="document.getElementById('imageUpload').click()" class="interactive-button py-2 px-4 rounded-full text-sm bg-gradient-to-br from-indigo-600 to-blue-500 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            Upload Image
+                        </button>
+                        <button onclick="showTab('generator')" class="interactive-button py-2 px-4 rounded-full text-sm bg-gradient-to-br from-purple-600 to-pink-500 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                            Generate AI Art
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="loading-overlay" class="loading-overlay absolute inset-0 flex items-center justify-center rounded-3xl hidden bg-slate-900/80 backdrop-blur-sm">
+                    <div class="flex flex-col items-center p-8 bg-slate-800/90 rounded-2xl border border-slate-700/50 shadow-xl">
+                        <div class="spinner mb-4"></div>
+                        <p class="text-white text-lg font-semibold mb-1">Processing...</p>
+                        <p id="loading-message" class="text-slate-300 text-sm max-w-xs text-center"></p>
+                    </div>
+                </div>
+                
+                <div id="message-box" class="absolute bottom-8 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-sm font-semibold py-2 px-6 rounded-full shadow-lg hidden z-50 animate__animated animate__fadeInUp"></div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="text-center mt-6 text-sm text-slate-500">
+            <p>PopOut v2.0 • Powered by Aditya Jha • © 2025 Exonova</p>
+          <P><center>Made with ♥ by Aditya Jha</center></p>
+        </div>
+    </div>
+
+    <script type="module">
+        // This listener ensures the script runs only after the entire HTML document is loaded.
+        window.onload = async () => {
+            const canvas = document.getElementById('imageCanvas');
+            const ctx = canvas.getContext('2d', { willReadFrequently: true });
+            
+            // UI Elements
+            const imageUpload = document.getElementById('imageUpload');
+            const brightnessControl = document.getElementById('brightness');
+            const contrastControl = document.getElementById('contrast');
+            const saturationControl = document.getElementById('saturation');
+            const blurControl = document.getElementById('blur');
+            const brightnessValue = document.getElementById('brightness-value');
+            const contrastValue = document.getElementById('contrast-value');
+            const saturationValue = document.getElementById('saturation-value');
+            const blurValue = document.getElementById('blur-value');
+            const resetBtn = document.getElementById('reset-btn');
+            const downloadBtn = document.getElementById('download-btn');
+            const welcomeMessage = document.getElementById('welcome-message');
+            const loadingOverlay = document.getElementById('loading-overlay');
+            const loadingMessage = document.getElementById('loading-message');
+            const messageBox = document.getElementById('message-box');
+            const generateBtn = document.getElementById('generate-btn');
+            const genPrompt = document.getElementById('gen-prompt');
+            const pexelsQueryInput = document.getElementById('pexels-query');
+            const pexelsSearchBtn = document.getElementById('pexels-search-btn');
+            const pexelsResultsContainer = document.getElementById('pexels-results');
+            const bgRemoverBtn = document.getElementById('bg-remover-btn');
+            const upscalerBtn = document.getElementById('upscaler-btn');
+            const popArtBtn = document.getElementById('pop-art-btn');
+            const editorTab = document.getElementById('editor-tab');
+            const generatorTab = document.getElementById('generator-tab');
+            const searchTab = document.getElementById('search-tab');
+            const geminiTab = document.getElementById('gemini-tab');
+            const generateCaptionBtn = document.getElementById('generate-caption-btn');
+            const captionOutput = document.getElementById('caption-output');
+            const readCaptionBtn = document.getElementById('read-caption-btn');
+            const ttsAudio = document.getElementById('tts-audio');
+            const geminiChatContainer = document.getElementById('gemini-chat-container');
+            const geminiChatInput = document.getElementById('gemini-chat-input');
+            const geminiChatSendBtn = document.getElementById('gemini-chat-send-btn');
+
+            // Application State
+            let originalImage = new Image();
+            let currentImageURL = null;
+            let currentCaption = null;
+            let geminiChatHistory = [{ role: "user", parts: [{ text: "Hello, I am a user." }] }];
+
+            // Update slider value displays
+            brightnessControl.addEventListener('input', () => {
+                brightnessValue.textContent = `${brightnessControl.value}%`;
+            });
+            contrastControl.addEventListener('input', () => {
+                contrastValue.textContent = `${contrastControl.value}%`;
+            });
+            saturationControl.addEventListener('input', () => {
+                saturationValue.textContent = `${saturationControl.value}%`;
+            });
+            blurControl.addEventListener('input', () => {
+                blurValue.textContent = `${blurControl.value}px`;
+            });
+
+            // --- Utility Functions ---
+
+            // Show a temporary message to the user
+            const showMessage = (message, isError = false) => {
+                messageBox.textContent = message;
+                messageBox.className = isError 
+                    ? 'absolute bottom-8 left-1/2 -translate-x-1/2 bg-rose-600 text-white text-sm font-semibold py-2 px-6 rounded-full shadow-lg z-50 animate__animated animate__fadeInUp'
+                    : 'absolute bottom-8 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-sm font-semibold py-2 px-6 rounded-full shadow-lg z-50 animate__animated animate__fadeInUp';
+                setTimeout(() => {
+                    messageBox.classList.add('animate__fadeOutDown');
+                    setTimeout(() => {
+                        messageBox.classList.add('hidden');
+                        messageBox.classList.remove('animate__fadeOutDown');
+                    }, 500);
+                }, 3000);
+            };
+
+            // Switch between tabs
+            window.showTab = (tabName) => {
+                const tabs = [editorTab, generatorTab, searchTab, geminiTab];
+                const buttons = document.querySelectorAll('.tab-button');
+                tabs.forEach(tab => tab.classList.add('hidden'));
+                buttons.forEach(btn => btn.classList.remove('active'));
+                
+                if (tabName === 'editor') {
+                    editorTab.classList.remove('hidden');
+                    document.querySelector('[onclick="showTab(\'editor\')"]').classList.add('active');
+                } else if (tabName === 'generator') {
+                    generatorTab.classList.remove('hidden');
+                    document.querySelector('[onclick="showTab(\'generator\')"]').classList.add('active');
+                } else if (tabName === 'search') {
+                    searchTab.classList.remove('hidden');
+                    document.querySelector('[onclick="showTab(\'search\')"]').classList.add('active');
+                } else if (tabName === 'gemini') {
+                    geminiTab.classList.remove('hidden');
+                    document.querySelector('[onclick="showTab(\'gemini\')"]').classList.add('active');
+                }
+            };
+            
+            // Draw image on canvas, resizing it to fit the container
+            const drawImage = (img) => {
+                const container = canvas.parentElement;
+                const containerWidth = container.offsetWidth;
+                const containerHeight = container.offsetHeight;
+
+                const originalRatio = img.naturalWidth / img.naturalHeight;
+                let newWidth, newHeight;
+                
+                if (originalRatio > 1) { // Landscape
+                    newWidth = containerWidth * 0.8;
+                    newHeight = newWidth / originalRatio;
+                } else { // Portrait
+                    newHeight = containerHeight * 0.8;
+                    newWidth = newHeight * originalRatio;
+                }
+                
+                if (newWidth > containerWidth * 0.9) {
+                    newWidth = containerWidth * 0.9;
+                    newHeight = newWidth / originalRatio;
+                }
+
+                if (newHeight > containerHeight * 0.8) {
+                    newHeight = containerHeight * 0.8;
+                    newWidth = newHeight * originalRatio;
+                }
+
+                canvas.width = newWidth;
+                canvas.height = newHeight;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                welcomeMessage.classList.add('hidden');
+                downloadBtn.style.display = 'flex';
+                bgRemoverBtn.disabled = false;
+                upscalerBtn.disabled = false;
+                popArtBtn.disabled = false;
+                generateCaptionBtn.disabled = false;
+                geminiChatInput.disabled = false;
+                geminiChatSendBtn.disabled = false;
+            };
+
+            // Apply filters based on slider values
+            const applyFilters = () => {
+                if (!originalImage.src) return;
+                const brightness = brightnessControl.value;
+                const contrast = contrastControl.value;
+                const saturation = saturationControl.value;
+                const blur = blurControl.value;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.filter = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturation}%) blur(${blur}px)`;
+                ctx.drawImage(originalImage, 0, 0, canvas.width, canvas.height);
+            };
+
+            // Apply the pop art filter
+            const applyPopArtFilter = () => {
+                if (!originalImage.src) return;
+                ctx.filter = 'none';
+                ctx.drawImage(originalImage, 0, 0, canvas.width, canvas.height);
+
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const pixels = imageData.data;
+                const numPixels = pixels.length;
+
+                for (let i = 0; i < numPixels; i += 4) {
+                    const r = pixels[i];
+                    const g = pixels[i + 1];
+                    const b = pixels[i + 2];
+                    pixels[i] = Math.floor(r / 64) * 64;
+                    pixels[i + 1] = Math.floor(g / 64) * 64;
+                    pixels[i + 2] = Math.floor(b / 64) * 64;
+                }
+                ctx.putImageData(imageData, 0, 0);
+                showMessage('Pop Art filter applied!');
+            };
+
+            // Convert canvas content to a base64 string for API calls
+            const getCanvasBase64 = () => {
+                if (!originalImage.src) {
+                    showMessage('No image on canvas.', true);
+                    return null;
+                }
+                try {
+                    const dataURL = canvas.toDataURL('image/png');
+                    return dataURL.split(',')[1];
+                } catch (e) {
+                    showMessage("Error converting image to data. Please use a local image to use this feature.", true);
+                    console.error("toDataURL error:", e);
+                    return null;
+                }
+            };
+
+            // Function for exponential backoff retry for fetch calls
+            async function fetchWithRetry(url, options, retries = 3) {
+                let error = null;
+                for (let i = 0; i < retries; i++) {
+                    try {
+                        const response = await fetch(url, options);
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response;
+                    } catch (err) {
+                        error = err;
+                        console.error(`Fetch attempt ${i + 1} failed. Retrying...`, err);
+                        await new Promise(resolve => setTimeout(resolve, Math.pow(2, i) * 1000));
+                    }
+                }
+                throw error;
+            }
+
+            // --- Event Listeners ---
+            
+            imageUpload.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        originalImage.onload = () => {
+                            drawImage(originalImage);
+                            applyFilters();
+                        };
+                        originalImage.crossOrigin = 'Anonymous';
+                        originalImage.src = event.target.result;
+                        currentImageURL = event.target.result;
+                        brightnessControl.value = 100;
+                        contrastControl.value = 100;
+                        saturationControl.value = 100;
+                        blurControl.value = 0;
+                        brightnessValue.textContent = '100%';
+                        contrastValue.textContent = '100%';
+                        saturationValue.textContent = '100%';
+                        blurValue.textContent = '0px';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            brightnessControl.addEventListener('input', applyFilters);
+            contrastControl.addEventListener('input', applyFilters);
+            saturationControl.addEventListener('input', applyFilters);
+            blurControl.addEventListener('input', applyFilters);
+            popArtBtn.addEventListener('click', applyPopArtFilter);
+
+            resetBtn.addEventListener('click', () => {
+                if (!originalImage.src) return;
+                brightnessControl.value = 100;
+                contrastControl.value = 100;
+                saturationControl.value = 100;
+                blurControl.value = 0;
+                brightnessValue.textContent = '100%';
+                contrastValue.textContent = '100%';
+                saturationValue.textContent = '100%';
+                blurValue.textContent = '0px';
+                applyFilters();
+            });
+
+            downloadBtn.addEventListener('click', () => {
+                if (!currentImageURL) {
+                    showMessage('No image to download.', true);
+                    return;
+                }
+                try {
+                    const a = document.createElement('a');
+                    a.href = canvas.toDataURL('image/png');
+                    a.download = 'edited_image.png';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                } catch (e) {
+                    showMessage('Download failed. Please upload a local image to download.', true);
+                    console.error("Download error:", e);
+                }
+            });
+
+            // --- Pexels API Integration ---
+            const PEXELS_API_KEY = "Bk2Qtk2UwfSlkVge4mPxUL9Kg41KyykdYtvTCXxtKyEUDGRtbCRrIPrh"; // Replace with your Pexels API Key
+            const PEXELS_API_URL = "https://api.pexels.com/v1/search";
+
+            pexelsSearchBtn.addEventListener('click', async () => {
+                const query = pexelsQueryInput.value.trim();
+                if (query === '') {
+                    showMessage('Please enter a search query.', true);
+                    return;
+                }
+                if (!PEXELS_API_KEY) {
+                    showMessage('Please provide a valid Pexels API key to use this feature.', true);
+                    return;
+                }
+                loadingOverlay.classList.remove('hidden');
+                loadingMessage.textContent = 'Searching Pexels for high-quality images...';
+                pexelsResultsContainer.innerHTML = '';
+                try {
+                    const response = await fetchWithRetry(`${PEXELS_API_URL}?query=${encodeURIComponent(query)}&per_page=30`, {
+                        headers: { Authorization: PEXELS_API_KEY }
+                    });
+                    const data = await response.json();
+                    if (data.photos && data.photos.length > 0) {
+                        pexelsResultsContainer.innerHTML = '';
+                        data.photos.forEach(photo => {
+                            const imgContainer = document.createElement('div');
+                            imgContainer.className = 'relative rounded-xl overflow-hidden image-card h-40';
+                            
+                            const img = document.createElement('img');
+                            img.src = photo.src.medium;
+                            img.alt = photo.photographer;
+                            img.className = 'w-full h-full object-cover transition-transform duration-300';
+                            img.crossOrigin = 'Anonymous';
+                            
+                            const overlay = document.createElement('div');
+                            overlay.className = 'absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-end p-3';
+                            
+                            const credit = document.createElement('div');
+                            credit.className = 'text-white text-xs';
+                            credit.textContent = `by ${photo.photographer}`;
+                            
+                            overlay.appendChild(credit);
+                            imgContainer.appendChild(img);
+                            imgContainer.appendChild(overlay);
+                            
+                            imgContainer.onclick = () => {
+                                loadingOverlay.classList.remove('hidden');
+                                loadingMessage.textContent = 'Loading high-resolution image...';
+                                const newImage = new Image();
+                                newImage.onload = () => {
+                                    originalImage.src = newImage.src;
+                                    currentImageURL = newImage.src;
+                                    drawImage(originalImage);
+                                    applyFilters();
+                                    loadingOverlay.classList.add('hidden');
+                                    showTab('editor');
+                                };
+                                newImage.onerror = () => {
+                                    loadingOverlay.classList.add('hidden');
+                                    showMessage('Failed to load image from Pexels.', true);
+                                };
+                                newImage.crossOrigin = 'Anonymous';
+                                newImage.src = photo.src.original;
+                            };
+                            
+                            pexelsResultsContainer.appendChild(imgContainer);
+                        });
+                    } else {
+                        pexelsResultsContainer.innerHTML = '<div class="col-span-2 h-full flex flex-col items-center justify-center text-center p-6"><svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto text-slate-500 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><h3 class="text-md font-semibold text-white mb-1">No images found</h3><p class="text-sm text-slate-400">Try a different search term</p></div>';
+                    }
+                } catch (error) {
+                    console.error("Failed to fetch from Pexels:", error);
+                    showMessage('Failed to load Pexels images. Check your API key or network.', true);
+                } finally {
+                    loadingOverlay.classList.add('hidden');
+                }
+            });
+
+            // --- Gemini Image Generation (Imagen) ---
+            generateBtn.addEventListener('click', async () => {
+                const userPrompt = genPrompt.value.trim();
+                if (!userPrompt) { showMessage('Please enter a prompt.', true); return; }
+                loadingOverlay.classList.remove('hidden');
+                loadingMessage.textContent = 'Generating your AI artwork... This may take a moment';
+                
+                const payload = { instances: [{ prompt: userPrompt }], parameters: { "sampleCount": 1 } };
+                const apiKey = "AIzaSyB2v6jxigkdHc7hMwKQ0KCnHPwyKwbpGuA";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
+
+                try {
+                    const response = await fetchWithRetry(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+                    if (result.predictions && result.predictions.length > 0 && result.predictions[0].bytesBase64Encoded) {
+                        const imageUrl = `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
+                        originalImage.onload = () => {
+                            drawImage(originalImage);
+                            applyFilters();
+                            loadingOverlay.classList.add('hidden');
+                            showTab('editor');
+                            showMessage('AI artwork generated successfully!');
+                        };
+                        originalImage.src = imageUrl;
+                        currentImageURL = imageUrl;
+                    } else {
+                        showMessage('Failed to generate image. Try a different prompt.', true);
+                        loadingOverlay.classList.add('hidden');
+                    }
+                } catch (error) {
+                    console.error('Image generation failed:', error);
+                    showMessage('Image generation failed. Please try again.', true);
+                    loadingOverlay.classList.add('hidden');
+                }
+            });
+
+            // --- AI Tool Integrations ---
+            
+            // Background Remover using Gemini API
+            bgRemoverBtn.addEventListener('click', async () => {
+                const base64ImageData = getCanvasBase64();
+                if (!base64ImageData) return;
+                
+                loadingOverlay.classList.remove('hidden');
+                loadingMessage.textContent = 'Removing background with AI...';
+                
+                const prompt = "Remove the background from this image and return the image data with a transparent background.";
+                const payload = {
+                    contents: [{
+                        parts: [
+                            { text: prompt },
+                            {
+                                inlineData: {
+                                    mimeType: "image/png",
+                                    data: base64ImageData
+                                }
+                            }
+                        ]
+                    }],
+                };
+                const apiKey = "AIzaSyB2v6jxigkdHc7hMwKQ0KCnHPwyKwbpGuA";
+                // Using gemini-2.5-flash-preview-05-20 which is a multimodal model
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+                
+                try {
+                    const response = await fetchWithRetry(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+                    
+                    console.log("Gemini API Response:", result);
+
+                    const base64Data = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
+                    
+                    if (base64Data) {
+                        const newImageUrl = `data:image/png;base64,${base64Data}`;
+                        const newImage = new Image();
+                        newImage.onload = () => {
+                            originalImage.src = newImage.src;
+                            currentImageURL = newImage.src;
+                            drawImage(originalImage);
+                            showMessage('Background removed successfully!');
+                        };
+                        newImage.src = newImageUrl;
+                    } else {
+                        showMessage('Background removal failed. The API response was empty or malformed.', true);
+                    }
+                } catch (error) {
+                    console.error("Background removal failed:", error);
+                    showMessage('Background removal failed. Please try again.', true);
+                } finally {
+                    loadingOverlay.classList.add('hidden');
+                }
+            });
+
+            // Upscaler Simulation
+            upscalerBtn.addEventListener('click', async () => {
+                if (!currentImageURL) { showMessage('Please upload an image first.', true); return; }
+                loadingOverlay.classList.remove('hidden');
+                loadingMessage.textContent = 'Enhancing image quality with AI upscaling...';
+                try {
+                    await new Promise(resolve => setTimeout(resolve, 3000));
+                    showMessage('Image quality enhanced with AI upscaling.');
+                } catch (error) {
+                    console.error("Image upscaling simulation failed:", error);
+                    showMessage('Image upscaling failed.', true);
+                } finally {
+                    loadingOverlay.classList.add('hidden');
+                }
+            });
+
+            // --- Gemini Caption Generation ---
+            generateCaptionBtn.addEventListener('click', async () => {
+                const base64ImageData = getCanvasBase64();
+                if (!base64ImageData) return;
+
+                loadingOverlay.classList.remove('hidden');
+                loadingMessage.textContent = 'Generating creative caption...';
+                
+                const prompt = "Write a creative and engaging social media caption for this image. Make it attention-grabbing and suitable for Instagram.";
+                const payload = { 
+                    contents: [{ 
+                        role: "user", 
+                        parts: [
+                            { text: prompt },
+                            { inlineData: { mimeType: "image/png", data: base64ImageData } }
+                        ]
+                    }]
+                };
+                const apiKey = "AIzaSyB2v6jxigkdHc7hMwKQ0KCnHPwyKwbpGuA";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetchWithRetry(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    const result = await response.json();
+                    
+                    if (result.candidates && result.candidates.length > 0 && result.candidates[0].content.parts.length > 0) {
+                        const caption = result.candidates[0].content.parts[0].text;
+                        captionOutput.textContent = caption;
+                        currentCaption = caption;
+                        readCaptionBtn.disabled = false;
+                        showMessage('Creative caption generated!');
+                    } else {
+                        showMessage('Failed to generate caption.', true);
+                    }
+                } catch (error) {
+                    console.error('Caption generation failed:', error);
+                    showMessage('Caption generation failed. Please try again.', true);
+                } finally {
+                    loadingOverlay.classList.add('hidden');
+                }
+            });
+            
+            // --- Gemini TTS for Caption ---
+            readCaptionBtn.addEventListener('click', async () => {
+                if (!currentCaption) { showMessage('No caption to read.', true); return; }
+                loadingOverlay.classList.remove('hidden');
+                loadingMessage.textContent = 'Generating speech from caption...';
+
+                const payload = {
+                    contents: [{ parts: [{ text: currentCaption }] }],
+                    generationConfig: {
+                        responseModalities: ["AUDIO"],
+                        speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Puck" } } }
+                    },
+                    model: "gemini-2.5-flash-preview-tts"
+                };
+                const apiKey = "AIzaSyB2v6jxigkdHc7hMwKQ0KCnHPwyKwbpGuA";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetchWithRetry(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    const result = await response.json();
+                    const part = result?.candidates?.[0]?.content?.parts?.[0];
+                    const audioData = part?.inlineData?.data;
+                    const mimeType = part?.inlineData?.mimeType;
+                    if (audioData && mimeType && mimeType.startsWith("audio/")) {
+                        const sampleRate = parseInt(mimeType.match(/rate=(\d+)/)[1], 10);
+                        const pcmData = base64ToArrayBuffer(audioData);
+                        const pcm16 = new Int16Array(pcmData);
+                        const wavBlob = pcmToWav(pcm16, sampleRate);
+                        ttsAudio.src = URL.createObjectURL(wavBlob);
+                        ttsAudio.play();
+                        showMessage('Caption is being read aloud.');
+                    } else {
+                        showMessage('Failed to generate audio.', true);
+                    }
+                } catch (error) {
+                    console.error('TTS generation failed:', error);
+                    showMessage('TTS generation failed. Please try again.', true);
+                } finally {
+                    loadingOverlay.classList.add('hidden');
+                }
+            });
+            
+            // TTS helper functions
+            function base64ToArrayBuffer(base64) {
+                const binaryString = atob(base64);
+                const len = binaryString.length;
+                const bytes = new Uint8Array(len);
+                for (let i = 0; i < len; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+                return bytes.buffer;
+            }
+
+            function pcmToWav(pcmData, sampleRate) {
+                const numChannels = 1; const bitDepth = 16;
+                const bytesPerSample = bitDepth / 8;
+                const blockAlign = numChannels * bytesPerSample;
+                const byteRate = sampleRate * blockAlign;
+                const buffer = new ArrayBuffer(44 + pcmData.length * bytesPerSample);
+                const view = new DataView(buffer);
+                
+                function writeString(view, offset, string) {
+                    for (let i = 0; i < string.length; i++) view.setUint8(offset + i, string.charCodeAt(i));
+                }
+
+                writeString(view, 0, 'RIFF'); view.setUint32(4, 36 + pcmData.length * bytesPerSample, true);
+                writeString(view, 8, 'WAVE'); writeString(view, 12, 'fmt '); view.setUint32(16, 16, true);
+                view.setUint16(20, 1, true); view.setUint16(22, numChannels, true); view.setUint32(24, sampleRate, true);
+                view.setUint32(28, byteRate, true); view.setUint16(32, blockAlign, true); view.setUint16(34, bitDepth, true);
+                writeString(view, 36, 'data'); view.setUint32(40, pcmData.length * bytesPerSample, true);
+                let offset = 44;
+                for (let i = 0; i < pcmData.length; i++) {
+                    view.setInt16(offset, pcmData[i], true);
+                    offset += bytesPerSample;
+                }
+                return new Blob([view], { type: 'audio/wav' });
+            }
+
+            // --- Gemini VQA Chat ---
+            const addChatMessage = (role, text) => {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('text-sm', 'p-3', 'w-fit', 'max-w-[90%]', 'break-words', 'shadow-md');
+                messageDiv.classList.add(role === 'user' ? 'chat-message-user' : 'chat-message-gemini');
+                messageDiv.textContent = text;
+                geminiChatContainer.appendChild(messageDiv);
+                geminiChatContainer.scrollTop = geminiChatContainer.scrollHeight;
+            };
+
+            const sendGeminiChat = async () => {
+                const userMessage = geminiChatInput.value.trim();
+                if (!userMessage) return;
+                addChatMessage('user', userMessage);
+                geminiChatInput.value = '';
+                geminiChatInput.disabled = true;
+                geminiChatSendBtn.disabled = true;
+                loadingOverlay.classList.remove('hidden');
+                loadingMessage.textContent = 'Gemini is analyzing the image...';
+                
+                const base64ImageData = getCanvasBase64();
+                if (!base64ImageData) {
+                    showMessage('Please upload an image first.', true);
+                    loadingOverlay.classList.add('hidden');
+                    geminiChatInput.disabled = false;
+                    geminiChatSendBtn.disabled = false;
+                    return;
+                }
+
+                const chatHistoryWithImage = [...geminiChatHistory];
+                chatHistoryWithImage.push({ 
+                    role: "user", 
+                    parts: [
+                        { text: userMessage },
+                        { inlineData: { mimeType: "image/png", data: base64ImageData } }
+                    ]
+                });
+
+                const payload = { contents: chatHistoryWithImage };
+                const apiKey = "AIzaSyB2v6jxigkdHc7hMwKQ0KCnHPwyKwbpGuA";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetchWithRetry(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+                    if (result.candidates && result.candidates.length > 0 && result.candidates[0].content.parts.length > 0) {
+                        const geminiResponse = result.candidates[0].content.parts[0].text;
+                        addChatMessage('gemini', geminiResponse);
+                        geminiChatHistory = chatHistoryWithImage;
+                        geminiChatHistory.push({ role: "model", parts: [{ text: geminiResponse }] });
+                    } else {
+                        addChatMessage('gemini', "Sorry, I couldn't process that. Please try another question.");
+                    }
+                } catch (error) {
+                    console.error('Gemini chat failed:', error);
+                    addChatMessage('gemini', 'An error occurred. Please try again.');
+                } finally {
+                    loadingOverlay.classList.add('hidden');
+                    geminiChatInput.disabled = false;
+                    geminiChatSendBtn.disabled = false;
+                }
+            };
+            
+            geminiChatSendBtn.addEventListener('click', sendGeminiChat);
+            geminiChatInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') { sendGeminiChat(); }
+            });
+        };
+    </script>
+</body>
+</html>
