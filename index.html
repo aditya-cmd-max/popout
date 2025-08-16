@@ -322,6 +322,39 @@
             border-radius: 50%;
             opacity: 0.2;
         }
+       
+       .popout-link {
+            display: inline-block;
+            color: #222;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 24px;
+            background-color: #FFEB3B;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .popout-link:hover {
+            background-color: #FFEE58;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            transform: translateY(-1px);
+        }
+        
+        .popout-link:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        
+        .tagline {
+            margin-top: 16px;
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+        }
+
     </style>
 </head>
 <body class="flex items-center justify-center p-4 md:p-8">
@@ -677,7 +710,12 @@
                 <div id="message-box" class="absolute bottom-8 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-sm font-semibold py-2 px-6 rounded-full shadow-lg hidden z-50 animate__animated animate__fadeInUp"></div>
             </div>
         </div>
-        
+         <div style="text-align: center;">
+        <a href="https://example.com/popout-pro" class="popout-link" target="_blank">
+            Generate With PopOut
+        </a>
+        <div class="tagline">AI-powered image generation with depth effects</div>
+    </div>
         <!-- Footer -->
         <div class="text-center mt-6 text-sm text-slate-500">
             <p>PopOut v2.0 • Powered by Aditya Jha • © 2025 Exonova</p>
