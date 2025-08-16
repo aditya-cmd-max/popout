@@ -96,17 +96,20 @@
             overflow-x: hidden;
         }
         
-         header {
-      display: flex;
-      align-items: center;
-      padding: 10px 20px;
-      background-color: radial-gradient(circle at center, var(--darker), var(--dark));; /* Change background if you want */
-      border-bottom: 1px solid #ddd;
-    }
-    header img {
-      height: 100px; /* Adjust logo size */
-      width: auto;
-    }
+      .header {
+    width: 100%;
+    height: 80px; /* Adjust height */
+    background-color: #fff; /* Optional */
+    display: flex;
+    justify-content: center; /* centers horizontally */
+    align-items: center;     /* centers vertically */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional shadow */
+  }
+
+  .header img {
+    height: 50px; /* Adjust logo size */
+    width: auto;
+  }
         
         
         
@@ -335,10 +338,11 @@
     </style>
 </head>
 <body class="flex items-center justify-center p-4 md:p-8">
-<header>
-    <img src="https://aditya-cmd-max.github.io/popout/ChatGPT Image Aug 15, 2025, 08_26_20 PM.png" alt="Website Logo">
-  </header>
-    <!-- Animated Background Elements -->
+<div class="header">
+  <img src= https://aditya-cmd-max.github.io/popout/ChatGPT%20Image%20Aug%2015,%202025,%2008_26_20%20PM.png alt="Logo">
+</div>
+   
+   <!-- Animated Background Elements -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none">
         <div class="absolute top-20 left-10 w-3 h-3 bg-purple-500 rounded-full opacity-20 animate-pulse" style="animation-delay: 0.2s;"></div>
         <div class="absolute top-1/4 right-20 w-2 h-2 bg-indigo-400 rounded-full opacity-20 animate-pulse" style="animation-delay: 0.5s;"></div>
